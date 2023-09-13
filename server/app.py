@@ -9,10 +9,6 @@ app.config.from_object(__name__)
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
 
-@app.route("/")
-def main():
-    return render_template('app.html')
-
 
 @app.route('/get', methods=['GET'])
 def get_path():
@@ -33,6 +29,13 @@ def get_path():
         return jsonify(ret)
     else:
         return send_file(path)
+
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def main(path):
+    return render_template('app.html')
+
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=8080, debug=True)
