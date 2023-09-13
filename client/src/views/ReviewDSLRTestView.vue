@@ -32,7 +32,10 @@
         </div>
         <div class="col" >
           <button v-if="curIsFile()" class="float-end btn btn-dark m-1" type="button" @click="download"> Download </button>
-          <img v-show="!loading_img" v-if="curIsImage()" :src="getSubFilePath()" class="img-fluid" alt="Responsive image" @load="() => {loading_img = false}">
+          <img v-show="!loading_img" v-if="curIsImage()" :src="getSubFilePath()" class="img-fluid" @load="() => {loading_img = false}">
+          <video controls v-if="curIsVideo()" :key="getSubFilePath()" class="img-fluid">
+            <source :src="getSubFilePath()" type="video/mp4">
+          </video>
           <div class="spinner-border" role="status" v-if="curIsImage() && loading_img">
             <span class="visually-hidden">Loading...</span>
           </div>
@@ -96,6 +99,17 @@ export default {
       if (!this.file_data[this.cur_idx]) return false;
       const fn = this.file_data[this.cur_idx].name.toLowerCase();
       if (fn.endsWith(".jpg") || fn.endsWith(".png")) {
+        return true;
+      }
+      return false;
+    },
+    curIsVideo() {
+      if (this.file_data.length == 0) {
+        return false;
+      }
+      if (!this.file_data[this.cur_idx]) return false;
+      const fn = this.file_data[this.cur_idx].name.toLowerCase();
+      if (fn.endsWith(".mp4")) {
         return true;
       }
       return false;
